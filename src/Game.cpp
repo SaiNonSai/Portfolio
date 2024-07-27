@@ -212,7 +212,10 @@ void Game::keyPressed(sf::Event event)
       }
       else
       {
-        window.close();
+        if(in_menu)
+        {
+          window.close();
+        }
       }
   }
   if (!isServer)
@@ -226,6 +229,13 @@ void Game::keyReleased(sf::Event event)
   if (!isServer)
   {
     client->keyReleased(event);
+  }
+}
+void Game::TextEntered(sf::Event event)
+{
+  if(!isServer)
+  {
+    client->TextEntered(event);
   }
 }
 

@@ -25,6 +25,7 @@ class Game
   void mouseClicked(sf::Event event);
   void keyPressed(sf::Event event);
   void keyReleased(sf::Event event);
+  void TextEntered(sf::Event event);
   bool game_over;
 
 

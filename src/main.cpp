@@ -48,6 +48,9 @@ int main()
 
       if (event.type == sf::Event::KeyReleased)
         game.keyReleased(event);
+
+      if(event.type == sf::Event::TextEntered)
+        game.TextEntered(event);
     }
 
     //'update' element of the game loop

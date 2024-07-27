@@ -28,12 +28,13 @@ void Client::input(sf::TcpSocket& iSocket) const
 {
   while (running)
   {
-    std::string str;
-    std::getline(std::cin, str);
+    //std::string str;
+    //str = msg_txt.getString();
+    //std::getline(std::cin, str);
     std::cin.clear();
     if (connected)
     {
-      iSocket.send(reinterpret_cast<char*>(str.data()), str.length());
+      //iSocket.send(reinterpret_cast<char*>(str.data()), str.length());
     }
   }
 }
@@ -71,6 +72,12 @@ void Client::runThreads()
           static_buffer[received] = '\0';
         }
         std::cout << static_buffer << '\n';
+
+        for(int i = 9; i > 1; i--)
+        {
+          msg_txt[i].setString(msg_txt[i - 1].getString());
+        }
+        msg_txt[1].setString(static_buffer);
       }
     }
   }
@@ -86,13 +93,29 @@ void Client::init()
   player.init();
   ui.init();
   villager_txt.init();
+
+  //message box
+  msg_font.loadFromFile("Data/Fonts/OpenSans-LightItalic.ttf");
+  for(int i = 0; i < 10; i++)
+  {
+    msg_txt[i].setFont(msg_font);
+    msg_txt[i].setScale(0.2,0.2);
+  }
+
+
 }
 
 void Client::update(float dt, std::vector<std::vector<std::unique_ptr<Tile>>>& TILE_MAP,
                     sf::Sprite& weapon, sf::Sprite& villager,sf::Sprite& chest)
 {
+  //str = msg_txt.getString();
   camera.setCenter(player.getSpriteCentre());
   window.setView(camera);
+  for(int i = 0; i < 10; i++)
+  {
+    msg_txt[i].setPosition(player.getSpriteCentre().x, player.getSpriteCentre().y - 20 - i * 5);
+  }
+
 
   ui.update(camera.getCenter(), *player.getSprite());
 
@@ -128,27 +151,12 @@ void Client::update(float dt, std::vector<std::vector<std::unique_ptr<Tile>>>& T
     player.direction.setX(0);
     player.direction.setY(0);
   }
-
-
-
-  player.update(dt);
-
-  //Tile collision
-  /*for (const auto& tile : TILE_MAP[0])
+  //text_box
+  if(!text_open)
   {
-    if (tile->getID() == 2)
-    {
-      if(collision(sf::IntRect(player.getSprite()->getPosition().x + 3, player.getSprite()->getPosition().y + 3,
-                                player.getSprite()->getGlobalBounds().width + 3, player.getSprite()->getGlobalBounds().height + 3),
-                    sf::IntRect(tile->getSprite()->getPosition().x, tile->getSprite()->getPosition().y,
-                                tile->getSprite()->getGlobalBounds().width, tile->getSprite()->getGlobalBounds().height)))
-      {
-        std::cout << "collide" << std::endl;
-        player.direction.setX(0);
-        player.direction.setY(0);
-      }
-    }
-  }*/
+    player.update(dt);
+  }
+
   for (const auto& tile : TILE_MAP[0])
   {
     if (tile->getID() == 2)
@@ -187,46 +195,64 @@ void Client::render(std::vector<std::vector<std::unique_ptr<Tile>>>& TILE_MAP)
     villager_txt.render();
   }
   window.draw(*player.getSprite());
+  for(int i = 0; i < 10; i++)
+  {
+    window.draw(msg_txt[i]);
+  }
+
 
 }
 
 void Client::keyPressed(sf::Event event, sf::Sprite& weapon, sf::Sprite& villager)
 {
-  if (event.key.code == sf::Keyboard::W)
-  {
-    player.direction.setY(-1);
-  }
-  else if (event.key.code == sf::Keyboard::S)
-  {
-    player.direction.setY(1);
-  }
-  if (event.key.code == sf::Keyboard::A)
-  {
-    player.direction.setX(-1);
-  }
-  else if (event.key.code == sf::Keyboard::D)
-  {
-    player.direction.setX(1);
-  }
-  if(event.key.code == sf::Keyboard::G)
-  {
-    if(weapon_pickup == true)
-    {
-      weapon_pickup = false;
-      weapon.move(-20, 0);
-    }
-  }
-  if(event.key.code == sf::Keyboard::I)
-  {
-    inventory_open = !inventory_open;
-  }
-  if(event.key.code == sf::Keyboard::E)
+
+  if(event.key.code == sf::Keyboard::Tab)
   {
     //if(villager.getGlobalBounds().intersects(player.getSprite()->getGlobalBounds()))
     //{
       text_open = !text_open;
     //}
   }
+
+  if(!text_open)
+  {
+    if (event.key.code == sf::Keyboard::W)
+    {
+      player.direction.setY(-1);
+    }
+    else if (event.key.code == sf::Keyboard::S)
+    {
+      player.direction.setY(1);
+    }
+    if (event.key.code == sf::Keyboard::A)
+    {
+      player.direction.setX(-1);
+    }
+    else if (event.key.code == sf::Keyboard::D)
+    {
+      player.direction.setX(1);
+    }
+    if(event.key.code == sf::Keyboard::G)
+    {
+      if(weapon_pickup == true)
+      {
+        weapon_pickup = false;
+        weapon.move(-20, 0);
+      }
+    }
+    if(event.key.code == sf::Keyboard::I)
+    {
+      inventory_open = !inventory_open;
+    }
+  }
+  else
+    if(event.key.code == sf::Keyboard::Enter)
+    {
+      socket->send(reinterpret_cast<char*>(txt_input.data()), txt_input.length());
+      txt_input = "";
+      text_open = false;
+      msg_txt[0].setString("");
+    }
 }
 
 void Client::keyReleased(sf::Event event)
@@ -249,25 +275,30 @@ void Client::keyReleased(sf::Event event)
   }
 }
 
-bool Client::collision(sf::IntRect object_1, sf::IntRect object_2)
+void Client::TextEntered(sf::Event event)
 {
-  object_1_left = object_1.left;
-  object_1_top = object_1.top;
-  object_1_bottom = object_1.top + object_1.height;
-  object_1_right = object_1_left + object_1.width;
-  object_2_left = object_2.left;
-  object_2_top = object_2.top;
-  object_2_bottom = object_2_top + object_2.height;
-  object_2_right = object_2_left + object_2.width;
+  if(text_open)
+  {
+    if(event.text.unicode < 128)
+    {
+      //8 = backspace key
+      if (event.text.unicode == 8)
+      {
+        if (txt_input.size() > 0)
+        {
+          txt_input.pop_back();
+        }
+      }
+      // 27 = escape key
+      else if (event.text.unicode != 27)
+      {
+        txt_input += static_cast<char>(event.text.unicode);
+      }
+    }
 
-  if(object_1_right < object_2_left || object_1_left > object_2_right ||
-      object_1_top > object_2_bottom || object_1_bottom < object_2_top)
-  {
-    return false;
+    msg_txt[0].setString(txt_input);
   }
-  else
-  {
-    return true;
-  }
+
+
 }
 

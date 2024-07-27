@@ -26,6 +26,7 @@ class Client
   void render(std::vector<std::vector<std::unique_ptr<Tile>>>& TILE_MAP);
   void keyPressed(sf::Event event, sf::Sprite& weapon, sf::Sprite& villager);
   void keyReleased(sf::Event event);
+  void TextEntered(sf::Event event);
   bool collision(sf::IntRect object_1, sf::IntRect object_2);
 
   std::atomic<bool> running = false;
@@ -33,6 +34,13 @@ class Client
 
 
  private:
+
+  //message window
+  std::string txt_input;
+  sf::Text msg_txt[10];
+  sf::Font msg_font;
+  //std::string str;
+
 
   sf::RenderWindow& window;
 

@@ -71,7 +71,7 @@ void Server::listen(sf::TcpSocket& cSocket)
 }
 
 void Server::send(std::string buffer)
-{;
+{
   auto message = reinterpret_cast<char*>(buffer.data());
 
   std::lock_guard<std::mutex>lck(mutex);
