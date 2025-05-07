@@ -2695,13 +2695,13 @@ input, select, textarea {
 		}
 
 		ul.actions.special {
-			-moz-justify-content: center;
-			-webkit-justify-content: center;
-			-ms-justify-content: center;
+			display: flex;
 			justify-content: center;
-			width: 100%;
 			margin-left: 0;
-		}
+			padding: 0;
+			list-style: none;
+			margin-top: 0;
+		  }
 
 			ul.actions.special li:first-child {
 				padding-left: 0;
@@ -3766,10 +3766,8 @@ input, select, textarea {
 
 		#main > * {
 			padding: 4rem 4rem 2rem 4rem ;
-			border-top: solid 2px #eeeeee;
 			margin: 0;
 		}
-
 			#main > *:first-child {
 				border-top: 0;
 			}
@@ -3858,7 +3856,7 @@ input, select, textarea {
 
 			#main > .posts > * {
 				padding: 4rem;
-				width: 50%;
+				width: 33.33%;
 			}
 
 			#main > .posts > article {
@@ -3868,6 +3866,7 @@ input, select, textarea {
 				border-top-width: 2px;
 				text-align: center;
 			}
+			
 
 				#main > .posts > article > :last-child {
 					margin-bottom: 0;
