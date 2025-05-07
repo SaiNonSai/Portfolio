@@ -2954,6 +2954,7 @@ input, select, textarea {
 
 			header.major > p {
 				margin-top: 0;
+				margin-left: 0;
 				text-align: center;
 			}
 
@@ -3792,7 +3793,29 @@ input, select, textarea {
 			#main > .post.featured {
 				text-align: center;
 			}
+			#main > .post.featured header.major {
+				text-align: left !important;
+			}
+			/*Gallery*/
+			.gallery{
+				display: grid;
+				grid-template-columns: repeat(4,1fr);
+				gap: 10px;
+			}
 
+			.gallery img {
+				width: 100px;
+				height: 100px;
+				object-fit: contain;
+				border-radius: 1px;
+				background-color: white; /* optional for clarity */
+				padding: 5px; /* optional if your icons look tight */
+			}
+			
+			.gallery img.unity {
+				background-color: white;
+				padding: 0; /* remove space if the logo has built-in whitespace */
+			}
 			@media screen and (max-width: 1280px) {
 
 				#main > .post {
