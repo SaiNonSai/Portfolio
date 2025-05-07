@@ -2697,6 +2697,7 @@ input, select, textarea {
 		ul.actions.special {
 			display: flex;
 			justify-content: center;
+			margin-top: -40px;
 			margin-left: 0;
 			padding: 0;
 			list-style: none;
@@ -3814,7 +3815,8 @@ input, select, textarea {
 			
 			.gallery img.unity {
 				background-color: white;
-				padding: 0; /* remove space if the logo has built-in whitespace */
+				width: 130px;
+				height: 130px;
 			}
 			@media screen and (max-width: 1280px) {
 
