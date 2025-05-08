@@ -3778,7 +3778,11 @@ input, select, textarea {
 		}
 
 		#main > .post {
-			padding: 8rem 8rem 6rem 8rem ;
+			padding-top: 0rem;
+			padding-left: 8rem;
+			padding-bottom: 6rem;
+			padding-right: 8rem;
+		
 		}
 
 			#main > .post header.major > .date {
@@ -3792,11 +3796,12 @@ input, select, textarea {
 			}
 
 			#main > .post.featured {
-				text-align: center;
+				text-align: justify;
 			}
 			#main > .post.featured header.major {
 				text-align: left !important;
 			}
+			
 			/*Gallery*/
 			.gallery{
 				display: grid;
@@ -3885,7 +3890,6 @@ input, select, textarea {
 
 			#main > .posts > article {
 				border-color: #eeeeee;
-				border-left-width: 2px;
 				border-style: solid;
 				border-top-width: 2px;
 				text-align: center;
@@ -3984,6 +3988,7 @@ input, select, textarea {
 		width: calc(100% - 4rem);
 		max-width: 72rem;
 		z-index: 2;
+		top: -4rem;
 	}
 
 		#footer input, #footer select, #footer textarea {
