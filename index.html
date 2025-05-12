@@ -7,54 +7,37 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
         <style>
+            #topphoto {
+                margin: 0;
+                height: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                    }
+
+            .centered-img {
+                width: 25%;
+                margin-top: 20%;
+                margin-bottom: 2rem;
+                    }
+
+					@media screen and (max-width: 480px) {
+    html {
+        font-size: 10pt;
+    }
+
     #topphoto {
-        margin: 0;
-        height: auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        flex-direction: column;
+        padding: 1rem;
     }
 
     .centered-img {
-        width: 25%;
-        margin-top: 20%;
-        margin-bottom: 2rem;
+        width: 100%; /* More suitable for small screens */
+        margin-top: 2rem;
+        margin-bottom: 1.5rem;
     }
-
-    @media screen and (max-width: 1680px) {
-        html {
-            font-size: 12pt;
-        }
-
-        .centered-img {
-            width: 30%;
-            margin-top: 15%;
-        }
-    }
-
-    @media screen and (max-width: 1280px) {
-        html {
-            font-size: 11pt;
-        }
-
-        .centered-img {
-            width: 40%;
-            margin-top: 10%;
-        }
-    }
-
-    @media screen and (max-width: 360px) {
-        html {
-            font-size: 10pt;
-        }
-
-        .centered-img {
-            width: 80%;
-            margin-top: 5%;
-        }
-    }
-</style>
-
+}
+        </style>
 	</head>
 	<body class="is-preload">
         
